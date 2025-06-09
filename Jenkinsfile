@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-
+        AWS_REGION = 'us-east-1'
     }
 
     options {
@@ -19,7 +19,6 @@ pipeline {
         stage('Terraform Operations') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Cred']]) {
-
                     sh 'terraform init'
                     sh 'terraform plan -out=tfplan'
                     sh 'terraform apply -auto-approve tfplan'
