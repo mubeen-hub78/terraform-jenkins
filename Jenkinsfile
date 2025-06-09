@@ -12,7 +12,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'git@github.com:mubeen-hub78/terraform-jenkins.git'
+                // CHANGE THIS LINE:
+                git url: 'https://github.com/mubeen-hub78/terraform-jenkins.git', branch: 'main' // Assuming 'main' branch
             }
         }
 
