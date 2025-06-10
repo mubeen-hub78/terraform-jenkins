@@ -1,36 +1,26 @@
 pipeline {
     agent any
 
-    environment {
-        AWS_REGION = 'us-east-1'
-    }
-
-    options {
-        skipStagesAfterUnstable()
+    tools {
+        terraform 'terraform'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                // CHANGE THIS LINE:
-                git url: 'https://github.com/mubeen-hub78/terraform-jenkins.git', branch: 'main' // Assuming 'main' branch
+                git branch: 'main',
+                    url: 'https://github.com/mubeen-hub78/terraform-jenkins.git'
             }
         }
-
-        stage('Terraform Operations') {
+        stage('Terraform Init') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-Cred']]) {
-                    sh 'terraform init'
-                    sh 'terraform plan -out=tfplan'
-                    sh 'terraform apply -auto-approve tfplan'
-                }
+                sh 'terraform init'
             }
         }
-    }
-
-    post {
-        always {
-            cleanWs()
+        stage('Terraform Apply') {
+            steps {
+                sh 'terraform apply -auto-approve'
+            }
         }
     }
 }
