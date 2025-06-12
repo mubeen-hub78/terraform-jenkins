@@ -1,5 +1,5 @@
 resource "aws_iam_user" "Admin-user" {
-name = "Test"
+name = "jenkins"
 tags = {
   "description" = "created from local"
 }
