@@ -1,13 +1,14 @@
-resource "local_file" "devops" {
-  filename = "explicit.txt"
-  content  = "explicit test id is ${random_pet.devops.id}"
-  depends_on = [ random_pet.devops ]
+resource "aws_iam_user" "Admin-user" {
+name = "Test"
+tags = {
+  "description" = "created from local"
 }
-resource "random_pet" "devops" {
-  prefix    = "mr"
-  separator = "."
-  length    = "1"
 }
-output "devops" {
-  value = random_pet.devops
+resource "aws_iam_policy" "adminuser" {
+  name   = "Admin_Users_policy"
+  policy = file("admin-policy.json")
+}
+resource "aws_iam_user_policy_attachment" "Test-admin-access" {
+  user       = aws_iam_user.Admin-user.name
+  policy_arn = aws_iam_policy.adminuser.arn
 }
